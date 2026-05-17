@@ -4,25 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nhật ký cảm xúc</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Be Vietnam Pro',sans-serif;background:#F7F5F0;color:#2C2A27;min-height:100vh}
-.app{max-width:680px;margin:0 auto;padding:2rem 1.25rem}
-.header{margin-bottom:1.75rem}
-.header h1{font-size:22px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.header p{font-size:14px;color:#7A7670}
-.shared-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;font-size:11px;font-weight:500}
+.app{max-width:700px;margin:0 auto;padding:2rem 1.25rem}
+
+.header{margin-bottom:1.5rem}
+.header h1{font-size:21px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.header p{font-size:13px;color:#7A7670}
+.shared-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;font-size:11px;font-weight:500}
+.conn-status{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:999px;font-weight:500}
+.conn-status.online{background:#E8F5E9;color:#2E7D32}
+.conn-status.offline{background:#FEECE9;color:#B71C1C}
+.conn-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* Auth */
+.auth-panel{background:#fff;border:1px solid #E8E5DF;border-radius:16px;padding:1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.auth-panel h2{font-size:16px;font-weight:600;margin-bottom:4px}
+.auth-panel .sub{font-size:13px;color:#7A7670;margin-bottom:14px}
+.auth-fields{display:flex;flex-direction:column;gap:10px}
+.auth-input{font-size:14px;padding:9px 13px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;outline:none;font-family:inherit;width:100%}
+.auth-input:focus{border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.1)}
+.auth-hint{font-size:12px;color:#E24B4A}
+.auth-btn{padding:9px 0;background:#534AB7;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;width:100%;transition:background .15s}
+.auth-btn:hover{background:#3C3489}
+
+/* User bar */
+.user-bar{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E8E5DF;border-radius:12px;padding:10px 14px;margin-bottom:1rem}
+.user-bar-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid #E8E5DF;cursor:pointer;transition:border-color .15s;font-size:20px}
+.user-bar-avatar:hover{border-color:#534AB7}
+.user-bar-name{font-size:14px;font-weight:500;flex:1}
+.user-bar-sub{font-size:12px;color:#B0ADA6}
+.logout-btn{background:none;border:1px solid #E8E5DF;border-radius:8px;padding:5px 12px;font-size:12px;color:#7A7670;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.logout-btn:hover{border-color:#E24B4A;color:#E24B4A}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:18px;padding:1.5rem;width:340px;max-width:90vw;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.modal h3{font-size:16px;font-weight:600;margin-bottom:14px}
+.avatar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px}
+.avatar-option{width:44px;height:44px;border-radius:50%;border:2px solid transparent;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;background:#F7F5F0}
+.avatar-option:hover{border-color:#B0A9E8;transform:scale(1.08)}
+.avatar-option.selected{border-color:#534AB7;background:#EEEDFE}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end}
+.modal-btn-cancel{background:none;border:1px solid #E8E5DF;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit}
+.modal-btn-save{background:#534AB7;color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+.modal-btn-save:hover{background:#3C3489}
+
+/* Write box */
 .write-box{background:#fff;border:1px solid #E8E5DF;border-radius:16px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
-.name-row{display:flex;gap:10px;margin-bottom:12px;align-items:center}
-.name-input{flex:1;font-size:14px;padding:8px 12px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;outline:none;font-family:inherit}
-.name-input:focus{border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.1)}
-.mood-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.mood-row{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
 .mood-label{font-size:13px;color:#7A7670;margin-right:2px}
-.mood-btn{padding:6px 14px;border-radius:999px;border:1px solid #E8E5DF;background:#F7F5F0;color:#7A7670;font-size:13px;cursor:pointer;transition:all .15s;font-family:inherit}
+.mood-btn{padding:5px 12px;border-radius:999px;border:1px solid #E8E5DF;background:#F7F5F0;color:#7A7670;font-size:13px;cursor:pointer;transition:all .15s;font-family:inherit}
 .mood-btn:hover{border-color:#B0A9E8}
 .mood-btn[data-mood="vui"].active{background:#EEEDFE;color:#3C3489;border-color:#AFA9EC}
 .mood-btn[data-mood="buồn"].active{background:#E3F0FB;color:#0C447C;border-color:#85B7EB}
@@ -32,74 +68,137 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F7F5F0;color:#2C2A27;mi
 .mood-btn[data-mood="mệt"].active{background:#F1EFE8;color:#444441;border-color:#B4B2A9}
 .mood-btn[data-mood="yêu"].active{background:#FBEAF0;color:#72243E;border-color:#ED93B1}
 .mood-btn[data-mood="khác"].active{background:#F1EFE8;color:#444441;border-color:#D3D1C7}
-.content-area{width:100%;min-height:110px;resize:vertical;font-size:15px;line-height:1.7;padding:10px 12px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;font-family:inherit;outline:none;transition:border .15s}
+.content-area{width:100%;min-height:100px;resize:vertical;font-size:15px;line-height:1.7;padding:10px 12px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;font-family:inherit;outline:none;transition:border .15s}
 .content-area:focus{border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.1)}
-.bottom-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.bottom-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 .char-count{font-size:12px;color:#B0ADA6}
 .char-count.warn{color:#BA7517}
 .char-count.near{color:#E24B4A}
-.post-btn{padding:8px 22px;background:#534AB7;color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit;display:flex;align-items:center;gap:6px}
+.post-btn{padding:8px 20px;background:#534AB7;color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit;display:flex;align-items:center;gap:6px}
 .post-btn:hover{background:#3C3489}
-.post-btn:active{transform:scale(0.97)}
 .post-btn:disabled{opacity:.5;cursor:not-allowed}
 .saving-indicator{font-size:12px;color:#B0ADA6;display:flex;align-items:center;gap:4px}
+
+/* Stats & filter */
 .stats-row{display:flex;gap:8px;margin-bottom:1rem}
-.stat-card{flex:1;background:#fff;border:1px solid #E8E5DF;border-radius:12px;padding:10px 14px}
-.stat-num{font-size:20px;font-weight:600;color:#2C2A27}
-.stat-lbl{font-size:12px;color:#7A7670;margin-top:2px}
-.filter-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.stat-card{flex:1;background:#fff;border:1px solid #E8E5DF;border-radius:12px;padding:10px 12px}
+.stat-num{font-size:19px;font-weight:600}
+.stat-lbl{font-size:11px;color:#7A7670;margin-top:2px}
+.filter-row{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
 .filter-label{font-size:13px;color:#7A7670}
 .filter-btn{padding:4px 12px;border-radius:999px;border:1px solid #E8E5DF;background:transparent;color:#7A7670;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s}
 .filter-btn:hover{border-color:#B0A9E8;color:#534AB7}
 .filter-btn.active{background:#534AB7;color:#fff;border-color:#534AB7}
-.search-input{margin-left:auto;font-size:13px;padding:5px 10px;border:1px solid #E8E5DF;border-radius:999px;background:#fff;color:#2C2A27;outline:none;width:160px;font-family:inherit}
+.search-input{margin-left:auto;font-size:13px;padding:5px 10px;border:1px solid #E8E5DF;border-radius:999px;background:#fff;color:#2C2A27;outline:none;width:150px;font-family:inherit}
 .search-input:focus{border-color:#534AB7}
+
+/* Posts */
 .posts{display:flex;flex-direction:column;gap:10px}
-.post-card{background:#fff;border:1px solid #E8E5DF;border-radius:14px;padding:1rem 1.25rem;box-shadow:0 1px 3px rgba(0,0,0,0.04);animation:fadeIn .2s ease}
+.post-card{background:#fff;border:1px solid #E8E5DF;border-radius:14px;padding:1rem 1.25rem;box-shadow:0 1px 3px rgba(0,0,0,0.04);animation:fadeIn .2s ease;scroll-margin-top:80px;transition:border-color .3s,box-shadow .3s}
+.post-card.highlight{border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.14)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .post-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
-.post-meta{flex:1}
+.post-avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #E8E5DF}
+.post-meta{flex:1;min-width:0}
 .post-author{font-size:14px;font-weight:500}
 .post-time{font-size:12px;color:#B0ADA6}
 .mood-badge{padding:3px 10px;border-radius:999px;font-size:11px;font-weight:500;white-space:nowrap}
 .post-content{font-size:15px;line-height:1.7;color:#2C2A27;word-break:break-word;white-space:pre-wrap}
-.post-content.collapsed{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.post-content.collapsed{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}
 .expand-btn{margin-top:4px;background:none;border:none;color:#534AB7;font-size:13px;cursor:pointer;padding:0;font-family:inherit}
-.post-actions{display:flex;gap:12px;margin-top:10px;padding-top:8px;border-top:1px solid #F0EDE8}
-.like-btn,.del-btn{background:none;border:none;font-size:13px;color:#B0ADA6;cursor:pointer;display:flex;align-items:center;gap:4px;padding:0;font-family:inherit;transition:color .15s}
-.like-btn:hover{color:#D4537E}
-.del-btn:hover{color:#E24B4A}
-.like-btn.liked{color:#D4537E}
+.post-actions{display:flex;gap:10px;margin-top:10px;padding-top:8px;border-top:1px solid #F0EDE8;flex-wrap:wrap}
+.action-btn{background:none;border:none;font-size:13px;color:#B0ADA6;cursor:pointer;display:flex;align-items:center;gap:4px;padding:0;font-family:inherit;transition:color .15s}
+.action-btn:hover{color:#534AB7}
+.action-btn.like:hover,.action-btn.like.liked{color:#D4537E}
+.action-btn.del:hover{color:#E24B4A}
+
+/* Replies */
+.replies-section{margin-top:10px;padding-top:10px;border-top:1px solid #F0EDE8}
+.reply-card{display:flex;gap:8px;margin-bottom:8px;cursor:pointer;border-radius:8px;padding:4px;transition:background .15s}
+.reply-card:hover{background:#F7F5F0}
+.reply-avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #E8E5DF}
+.reply-bubble{flex:1}
+.reply-header{display:flex;align-items:baseline;gap:6px;margin-bottom:2px}
+.reply-author{font-size:12px;font-weight:600}
+.reply-time{font-size:11px;color:#B0ADA6}
+.reply-content{font-size:13px;line-height:1.5;color:#2C2A27;word-break:break-word}
+.reply-box{display:flex;gap:8px;align-items:flex-end;margin-top:8px}
+.reply-input{flex:1;font-size:13px;padding:7px 11px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;font-family:inherit;outline:none;resize:none;min-height:36px;transition:border .15s}
+.reply-input:focus{border-color:#534AB7;box-shadow:0 0 0 2px rgba(83,74,183,0.1)}
+.reply-send-btn{padding:7px 14px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .15s;flex-shrink:0}
+.reply-send-btn:hover{background:#3C3489}
+
 .empty{text-align:center;padding:3rem 1rem;color:#B0ADA6;font-size:14px}
 .empty i{font-size:32px;display:block;margin-bottom:8px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#2C2A27;color:#F7F5F0;padding:9px 20px;border-radius:999px;font-size:13px;opacity:0;transition:all .25s;z-index:99;pointer-events:none;font-family:inherit}
+
+/* Edit modal */
+.edit-modal{background:#fff;border-radius:18px;padding:1.5rem;width:560px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.edit-modal h3{font-size:16px;font-weight:600;margin-bottom:12px}
+.edit-mood-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.edit-textarea{width:100%;min-height:160px;resize:vertical;font-size:15px;line-height:1.7;padding:10px 12px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;font-family:inherit;outline:none;transition:border .15s}
+.edit-textarea:focus{border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.1)}
+.edit-char{font-size:12px;color:#B0ADA6;margin-bottom:12px}
+.action-btn.edit:hover{color:#534AB7}
+/* Guest bar */
+.guest-bar{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E8E5DF;border-radius:12px;padding:10px 14px;margin-bottom:1rem}
+.guest-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#FDF3E0;color:#633806;border:1px solid #EF9F27;font-size:11px;font-weight:500;white-space:nowrap}
+.guest-name-input{flex:1;font-size:14px;font-weight:500;padding:4px 8px;border:1px solid #E8E5DF;border-radius:8px;background:#F7F5F0;color:#2C2A27;font-family:inherit;outline:none;min-width:0}
+.guest-name-input:focus{border-color:#534AB7;box-shadow:0 0 0 2px rgba(83,74,183,0.1)}
+.login-btn{background:#534AB7;color:#fff;border:none;border-radius:8px;padding:6px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .15s;white-space:nowrap}
+.login-btn:hover{background:#3C3489}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#2C2A27;color:#F7F5F0;padding:9px 20px;border-radius:999px;font-size:13px;opacity:0;transition:all .25s;z-index:300;pointer-events:none;font-family:inherit}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .loading-bar{text-align:center;padding:3rem 1rem;color:#B0ADA6;font-size:14px}
-.conn-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:2px 8px;border-radius:999px;margin-left:8px;font-weight:500}
-.conn-status.online{background:#E8F5E9;color:#2E7D32}
-.conn-status.offline{background:#FEECE9;color:#B71C1C}
-.conn-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
 </style>
 </head>
 <body>
 <div class="app">
+
   <div class="header">
     <h1>
       <i class="ti ti-mood-smile" style="font-size:20px;color:#534AB7"></i>
       Nhật ký cảm xúc
-      <span class="shared-badge"><i class="ti ti-world" style="font-size:12px"></i>Cộng đồng</span>
+      <span class="shared-badge"><i class="ti ti-world" style="font-size:11px"></i>Cộng đồng</span>
       <span class="conn-status offline" id="connStatus"><span class="conn-dot"></span><span id="connText">Đang kết nối...</span></span>
     </h1>
     <p>Mọi người đều thấy bài của nhau — chia sẻ thật lòng nhé</p>
   </div>
 
-  <div class="write-box">
-    <div class="name-row">
-      <i class="ti ti-user" style="color:#B0ADA6;font-size:18px"></i>
-      <input class="name-input" id="authorInput" placeholder="Tên của bạn (hoặc để trống là Ẩn danh)..." maxlength="40" />
+  <!-- Auth panel (ẩn mặc định, chỉ hiện khi bấm nút) -->
+  <div class="auth-panel" id="authPanel" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <h2>Đăng nhập / Tạo tài khoản</h2>
+      <button onclick="closeAuthPanel()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#B0ADA6;line-height:1">✕</button>
     </div>
-    <div class="mood-row" id="moodRow">
+    <p class="sub">Nhập tên + mật khẩu. Nếu tên chưa tồn tại, tài khoản sẽ tự tạo.</p>
+    <div class="auth-fields">
+      <input class="auth-input" id="authName" placeholder="Tên của bạn..." maxlength="40" />
+      <input class="auth-input" id="authPass" type="password" placeholder="Mật khẩu (để trống nếu chưa có)..." maxlength="100" />
+      <p class="auth-hint" id="authHint"></p>
+      <button class="auth-btn" onclick="doLogin()">Tiếp tục →</button>
+    </div>
+  </div>
+
+  <!-- Guest bar (hiện mặc định khi chưa đăng nhập) -->
+  <div class="guest-bar" id="guestBar">
+    <span class="guest-badge">👤 Khách</span>
+    <input class="guest-name-input" id="guestNameInput" placeholder="Tên hiển thị..." maxlength="40" />
+    <button class="login-btn" onclick="openAuthPanel()"><i class="ti ti-login" style="font-size:12px;vertical-align:-1px"></i> Đăng nhập</button>
+  </div>
+
+  <!-- User bar (đã đăng nhập) -->
+  <div class="user-bar" id="userBar" style="display:none">
+    <div class="user-bar-avatar" id="userBarAvatar" onclick="openAvatarModal()" title="Bấm để đổi avatar"></div>
+    <div style="flex:1;min-width:0">
+      <div class="user-bar-name" id="userBarName"></div>
+      <div class="user-bar-sub">Bấm vào avatar để thay đổi</div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout" style="font-size:13px;vertical-align:-1px"></i> Đăng xuất</button>
+  </div>
+
+  <!-- Write box (luôn hiện) -->
+  <div class="write-box" id="writeBox">
+    <div class="mood-row">
       <span class="mood-label">Tâm trạng:</span>
       <button class="mood-btn" data-mood="vui">😊 Vui</button>
       <button class="mood-btn" data-mood="buồn">😔 Buồn</button>
@@ -113,7 +212,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F7F5F0;color:#2C2A27;mi
     <textarea class="content-area" id="contentArea" placeholder="Hôm nay bạn cảm thấy thế nào?..." maxlength="100000"></textarea>
     <div class="bottom-row">
       <span class="char-count" id="charCount">0 / 100,000</span>
-      <div style="display:flex;align-items:center;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px">
         <span class="saving-indicator" id="savingIndicator" style="display:none">
           <i class="ti ti-loader" style="font-size:13px"></i>Đang lưu...
         </span>
@@ -124,6 +223,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F7F5F0;color:#2C2A27;mi
     </div>
   </div>
 
+  <!-- Stats -->
   <div class="stats-row" id="statsRow" style="display:none">
     <div class="stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">bài viết</div></div>
     <div class="stat-card"><div class="stat-num" id="statTop">—</div><div class="stat-lbl">tâm trạng chủ đạo</div></div>
@@ -131,6 +231,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F7F5F0;color:#2C2A27;mi
     <div class="stat-card"><div class="stat-num" id="statUsers">0</div><div class="stat-lbl">người viết</div></div>
   </div>
 
+  <!-- Filter -->
   <div class="filter-row" id="filterRow" style="display:none">
     <span class="filter-label">Lọc:</span>
     <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Tất cả</button>
@@ -145,267 +246,547 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F7F5F0;color:#2C2A27;mi
   </div>
 
   <div id="postsContainer">
-    <div class="loading-bar"><i class="ti ti-loader" style="font-size:22px;display:block;margin-bottom:8px"></i>Đang kết nối Firebase...</div>
+    <div class="loading-bar"><i class="ti ti-loader" style="font-size:22px;display:block;margin-bottom:8px"></i>Đang kết nối...</div>
+  </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="edit-modal">
+    <h3>✏️ Chỉnh sửa bài viết</h3>
+    <div class="edit-mood-row" id="editMoodRow"></div>
+    <textarea class="edit-textarea" id="editTextarea" maxlength="100000" oninput="document.getElementById('editChar').textContent=this.value.length.toLocaleString('vi-VN')+' / 100,000'"></textarea>
+    <div class="edit-char" id="editChar">0 / 100,000</div>
+    <div class="modal-btns">
+      <button class="modal-btn-cancel" onclick="closeEditModal()">Huỷ</button>
+      <button class="modal-btn-save" onclick="saveEdit()">💾 Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Avatar modal -->
+<div class="modal-overlay" id="avatarModal">
+  <div class="modal">
+    <h3>Chọn avatar của bạn</h3>
+    <div class="avatar-grid" id="avatarGrid"></div>
+    <div class="modal-btns">
+      <button class="modal-btn-cancel" onclick="closeAvatarModal()">Huỷ</button>
+      <button class="modal-btn-save" onclick="saveAvatar()">Lưu avatar</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- Firebase SDK (compat version — dùng script tag, không cần bundler) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
 <script>
-// ── Firebase config ──────────────────────────────────────────
-const firebaseConfig = {
-  apiKey: "AIzaSyD5oPUMmO55RuyfC1RwJ_AQo3D6W5bGVfU",
-  authDomain: "cryo-3c9da.firebaseapp.com",
-  databaseURL: "https://cryo-3c9da-default-rtdb.firebaseio.com",
-  projectId: "cryo-3c9da",
-  storageBucket: "cryo-3c9da.firebasestorage.app",
-  messagingSenderId: "1098539323888",
-  appId: "1:1098539323888:web:5d008f284b1b8bde160d35",
-  measurementId: "G-4VXZ5EFL38"
-};
-
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp({
+  apiKey:"AIzaSyD5oPUMmO55RuyfC1RwJ_AQo3D6W5bGVfU",
+  authDomain:"cryo-3c9da.firebaseapp.com",
+  databaseURL:"https://cryo-3c9da-default-rtdb.firebaseio.com",
+  projectId:"cryo-3c9da",
+  storageBucket:"cryo-3c9da.firebasestorage.app",
+  messagingSenderId:"1098539323888",
+  appId:"1:1098539323888:web:5d008f284b1b8bde160d35"
+});
 const db = firebase.database();
 const postsRef = db.ref('mood_posts');
+const usersRef = db.ref('mood_users');
 
-// ── State ────────────────────────────────────────────────────
-let posts = [];
-let selectedMood = null;
-let currentFilter = 'all';
-let expandedIds = new Set();
 const MAX_POSTS = 200;
-
-// ── Mood config ──────────────────────────────────────────────
+const AVATARS = ['😊','😎','🥰','😄','🤩','😇','🦊','🐱','🐶','🐼','🐨','🦁','🌸','🌟','⚡','🎯','🎨','🎮','🚀','🍀','💎','🔥','🌈','🎵'];
 const MOOD_CONFIG = {
-  vui:  {emoji:'😊',label:'Vui',       bg:'#EEEDFE',color:'#3C3489',border:'#AFA9EC'},
-  buồn: {emoji:'😔',label:'Buồn',      bg:'#E3F0FB',color:'#0C447C',border:'#85B7EB'},
-  tức:  {emoji:'😤',label:'Tức',       bg:'#FAECE7',color:'#712B13',border:'#F0997B'},
-  lo:   {emoji:'😰',label:'Lo lắng',   bg:'#FDF3E0',color:'#633806',border:'#EF9F27'},
-  bình: {emoji:'😌',label:'Bình yên',  bg:'#EAF3DE',color:'#27500A',border:'#97C459'},
-  mệt:  {emoji:'😴',label:'Mệt mỏi',  bg:'#F1EFE8',color:'#444441',border:'#B4B2A9'},
-  yêu:  {emoji:'🥰',label:'Yêu thương',bg:'#FBEAF0',color:'#72243E',border:'#ED93B1'},
-  khác: {emoji:'✨',label:'Khác',      bg:'#F1EFE8',color:'#444441',border:'#D3D1C7'},
+  vui: {emoji:'😊',label:'Vui',bg:'#EEEDFE',color:'#3C3489',border:'#AFA9EC'},
+  buồn:{emoji:'😔',label:'Buồn',bg:'#E3F0FB',color:'#0C447C',border:'#85B7EB'},
+  tức: {emoji:'😤',label:'Tức',bg:'#FAECE7',color:'#712B13',border:'#F0997B'},
+  lo:  {emoji:'😰',label:'Lo lắng',bg:'#FDF3E0',color:'#633806',border:'#EF9F27'},
+  bình:{emoji:'😌',label:'Bình yên',bg:'#EAF3DE',color:'#27500A',border:'#97C459'},
+  mệt: {emoji:'😴',label:'Mệt mỏi',bg:'#F1EFE8',color:'#444441',border:'#B4B2A9'},
+  yêu: {emoji:'🥰',label:'Yêu thương',bg:'#FBEAF0',color:'#72243E',border:'#ED93B1'},
+  khác:{emoji:'✨',label:'Khác',bg:'#F1EFE8',color:'#444441',border:'#D3D1C7'},
 };
-
-const AVATAR_COLORS = [
+const AV_COLORS=[
   {bg:'#EEEDFE',color:'#3C3489'},{bg:'#E3F0FB',color:'#0C447C'},
   {bg:'#FAECE7',color:'#712B13'},{bg:'#EAF3DE',color:'#27500A'},
   {bg:'#FDF3E0',color:'#633806'},{bg:'#FBEAF0',color:'#72243E'},
   {bg:'#EAF3DE',color:'#3B6D11'},{bg:'#F1EFE8',color:'#5F5E5A'},
 ];
 
-function getAvatarColor(name) {
-  let h = 0;
-  for (let c of name) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
-  return AVATAR_COLORS[h % AVATAR_COLORS.length];
-}
-function getInitials(name) {
-  const w = name.trim().split(/\s+/);
-  if (w.length >= 2) return (w[0][0] + w[w.length-1][0]).toUpperCase();
-  return name.slice(0,2).toUpperCase();
-}
-function timeAgo(ts) {
-  const d = (Date.now() - ts) / 1000;
-  if (d < 60) return 'vừa xong';
-  if (d < 3600) return Math.floor(d/60) + ' phút trước';
-  if (d < 86400) return Math.floor(d/3600) + ' giờ trước';
-  return Math.floor(d/86400) + ' ngày trước';
-}
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+let posts=[], selectedMood=null, currentFilter='all';
+let expandedIds=new Set(), openReplyIds=new Set();
+let currentUser=null, selectedAvatar=null;
+
+// ── Utils ────────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function initials(n){const w=n.trim().split(/\s+/);return w.length>=2?(w[0][0]+w[w.length-1][0]).toUpperCase():n.slice(0,2).toUpperCase();}
+function avColor(n){let h=0;for(let c of n)h=(h*31+c.charCodeAt(0))&0xffff;return AV_COLORS[h%AV_COLORS.length];}
+function timeAgo(ts){const d=(Date.now()-ts)/1000;if(d<60)return'vừa xong';if(d<3600)return Math.floor(d/60)+' phút trước';if(d<86400)return Math.floor(d/3600)+' giờ trước';return Math.floor(d/86400)+' ngày trước';}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function safeKey(n){return n.replace(/[.#$[\]/\s]/g,'_');}
+function makeUid(n){return n.trim().toLowerCase().replace(/[.#$[\]/\s]/g,'_');} // stable UID, lowercase
+function isEmoji(s){return s&&[...s].length===1&&s.codePointAt(0)>127;}
+
+// Avatar HTML helper
+function avHtml(name, avatar, size){
+  name=name||'?';
+  if(isEmoji(avatar)){
+    return `<div class="post-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.56)}px;background:#F7F5F0">${avatar}</div>`;
+  }
+  const c=avColor(name);
+  return `<div class="post-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.37)}px;font-weight:600;background:${c.bg};color:${c.color}">${initials(name)}</div>`;
 }
 
-// ── Connection status ────────────────────────────────────────
-db.ref('.info/connected').on('value', snap => {
-  const online = snap.val();
-  const el = document.getElementById('connStatus');
-  const txt = document.getElementById('connText');
-  el.className = 'conn-status ' + (online ? 'online' : 'offline');
-  txt.textContent = online ? 'Trực tuyến' : 'Mất kết nối';
+// ── Connection ───────────────────────────────────────────────
+db.ref('.info/connected').on('value',snap=>{
+  const el=document.getElementById('connStatus'),tx=document.getElementById('connText');
+  el.className='conn-status '+(snap.val()?'online':'offline');
+  tx.textContent=snap.val()?'Trực tuyến':'Mất kết nối';
 });
 
-// ── Listen realtime ──────────────────────────────────────────
-postsRef.orderByChild('ts').limitToLast(MAX_POSTS).on('value', snap => {
-  const val = snap.val();
-  if (val) {
-    posts = Object.values(val).sort((a,b) => b.ts - a.ts);
+// ── Guest name ───────────────────────────────────────────────
+function genGuestName(){
+  const adj=['Cool','Happy','Lazy','Lucky','Brave','Calm','Wise','Kind'];
+  const noun=['Panda','Tiger','Cloud','River','Star','Moon','Wind','Fox'];
+  const rand4=()=>Math.random().toString(36).slice(2,6);
+  return adj[Math.floor(Math.random()*adj.length)]+noun[Math.floor(Math.random()*noun.length)]+'_'+rand4();
+}
+// Khởi tạo guest name từ localStorage hoặc gen mới
+function initGuestName(){
+  let g=localStorage.getItem('mj_guest_name');
+  if(!g){g=genGuestName();localStorage.setItem('mj_guest_name',g);}
+  document.getElementById('guestNameInput').value=g;
+  return g;
+}
+// Lấy tên khách hiện tại
+function getGuestName(){
+  const v=document.getElementById('guestNameInput').value.trim();
+  if(v){localStorage.setItem('mj_guest_name',v);return v;}
+  return initGuestName();
+}
+
+// ── Auth panel toggle ────────────────────────────────────────
+function openAuthPanel(){
+  document.getElementById('authPanel').style.display='block';
+  document.getElementById('authName').focus();
+}
+function closeAuthPanel(){
+  document.getElementById('authPanel').style.display='none';
+  document.getElementById('authHint').textContent='';
+}
+
+// ── Auth ─────────────────────────────────────────────────────
+async function doLogin(){
+  const name=document.getElementById('authName').value.trim();
+  const pass=document.getElementById('authPass').value;
+  if(!name){showToast('Nhập tên của bạn nhé!');return;}
+  const uid=makeUid(name);
+  const snap=await usersRef.child(uid).once('value');
+  const data=snap.val();
+  if(!data){
+    // Kiểm tra xem có tài khoản cũ (key = safeKey(name) thay vì uid) không → migrate
+    const oldKey=safeKey(name);
+    const oldSnap=await usersRef.child(oldKey).once('value');
+    const oldData=oldSnap.val();
+    if(oldData && oldKey!==uid){
+      // Tài khoản cũ tồn tại với key khác → kiểm tra pass rồi migrate
+      if(oldData.password && oldData.password!==pass){
+        document.getElementById('authHint').textContent='❌ Sai mật khẩu, thử lại nhé!';return;
+      }
+      if(!oldData.password && pass){
+        // Đặt pass mới
+      }
+      // Migrate user sang uid mới
+      const newPass=pass||oldData.password||'';
+      await usersRef.child(uid).set({...oldData,uid,password:newPass,migratedAt:Date.now()});
+      await usersRef.child(oldKey).remove();
+      // Migrate bài post: author string → authorId + authorName
+      await migratePosts(oldData.name, uid);
+      currentUser={uid,name:oldData.name,avatar:oldData.avatar||''};
+      showToast(`Đã chuyển tài khoản sang hệ thống mới! 🎉`);
+    } else {
+      // Tài khoản hoàn toàn mới
+      await usersRef.child(uid).set({uid,name,avatar:'',password:pass||'',createdAt:Date.now()});
+      currentUser={uid,name,avatar:''};
+      showToast(`Chào mừng ${name}! Tài khoản đã được tạo 🎉`);
+    }
   } else {
-    posts = [];
+    // Tài khoản cũ dùng uid — kiểm tra mật khẩu
+    if(data.password && data.password!==pass){
+      document.getElementById('authHint').textContent='❌ Sai mật khẩu, thử lại nhé!';return;
+    }
+    if(!data.password && pass){
+      await usersRef.child(uid).update({password:pass});
+      showToast(`Đã đặt mật khẩu cho tài khoản ${data.name}!`);
+    }
+    currentUser={uid,name:data.name,avatar:data.avatar||''};
+    if(!pass||data.password===pass) showToast(`Chào mừng trở lại, ${data.name}! 👋`);
   }
-  renderPosts();
-  updateStats();
+  document.getElementById('authHint').textContent='';
+  sessionStorage.setItem('mj_user',JSON.stringify(currentUser));
+  showLoggedIn();
+}
+
+// Migrate bài post cũ: gán authorId cho bài có author===name nhưng chưa có authorId
+async function migratePosts(name, uid){
+  const snap=await postsRef.once('value');
+  const val=snap.val();if(!val)return;
+  const updates={};
+  Object.entries(val).forEach(([pid,p])=>{
+    if((p.author===name||p.authorName===name) && !p.authorId){
+      updates[pid+'/authorId']=uid;
+      updates[pid+'/authorName']=name;
+    }
+  });
+  if(Object.keys(updates).length) await postsRef.update(updates);
+}
+
+function showLoggedIn(){
+  closeAuthPanel();
+  document.getElementById('guestBar').style.display='none';
+  document.getElementById('userBar').style.display='flex';
+  updateUserBar();
+}
+
+function doLogout(){
+  currentUser=null;
+  sessionStorage.removeItem('mj_user');
+  document.getElementById('userBar').style.display='none';
+  document.getElementById('guestBar').style.display='flex';
+  document.getElementById('authName').value='';
+  document.getElementById('authPass').value='';
+  initGuestName();
+}
+
+function updateUserBar(){
+  if(!currentUser)return;
+  const el=document.getElementById('userBarAvatar');
+  if(isEmoji(currentUser.avatar)){
+    el.textContent=currentUser.avatar;
+    el.style.cssText='font-size:22px;background:#F7F5F0';
+  } else {
+    const c=avColor(currentUser.name);
+    el.textContent=initials(currentUser.name);
+    el.style.cssText=`font-size:13px;font-weight:600;background:${c.bg};color:${c.color}`;
+  }
+  document.getElementById('userBarName').textContent=currentUser.name;
+}
+
+// Restore session
+(()=>{
+  initGuestName();
+  try{
+    const s=sessionStorage.getItem('mj_user');
+    if(s){
+      currentUser=JSON.parse(s);
+      if(!currentUser.uid)currentUser.uid=makeUid(currentUser.name);
+      showLoggedIn();
+    }
+  }catch(e){}
+})();
+
+// Keyboard shortcuts
+document.getElementById('authPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('authName').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('authPass').focus();});
+
+// ── Avatar modal ─────────────────────────────────────────────
+function openAvatarModal(){
+  selectedAvatar=currentUser?.avatar||null;
+  document.getElementById('avatarGrid').innerHTML=AVATARS.map(a=>
+    `<div class="avatar-option${a===selectedAvatar?' selected':''}" onclick="selectAv(this,'${a}')">${a}</div>`
+  ).join('');
+  document.getElementById('avatarModal').classList.add('open');
+}
+function selectAv(el,av){
+  document.querySelectorAll('.avatar-option').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');selectedAvatar=av;
+}
+function closeAvatarModal(){document.getElementById('avatarModal').classList.remove('open');}
+async function saveAvatar(){
+  if(!currentUser)return;
+  currentUser.avatar=selectedAvatar||'';
+  sessionStorage.setItem('mj_user',JSON.stringify(currentUser));
+  await usersRef.child(currentUser.uid).update({avatar:currentUser.avatar});
+  updateUserBar();closeAvatarModal();showToast('Đã cập nhật avatar!');
+}
+document.getElementById('avatarModal').addEventListener('click',function(e){if(e.target===this)closeAvatarModal();});
+
+// ── Edit post ─────────────────────────────────────────────────
+let editingPostId=null, editingMood=null;
+function openEditModal(id){
+  const p=posts.find(x=>x.id===id);
+  if(!p||!currentUser)return;
+  const isOwner=p.authorId===currentUser.uid||(p.authorId===undefined&&(p.author||p.authorName)===currentUser.name);
+  if(!isOwner)return;
+  editingPostId=id;
+  editingMood=p.mood||null;
+  // Mood buttons
+  document.getElementById('editMoodRow').innerHTML=
+    Object.entries(MOOD_CONFIG).map(([k,m])=>
+      `<button class="mood-btn${editingMood===k?' active':''}" data-mood="${k}"
+        style="${editingMood===k?`background:${m.bg};color:${m.color};border-color:${m.border}`:''}"
+        onclick="selectEditMood(this,'${k}')">${m.emoji} ${m.label}</button>`
+    ).join('');
+  const ta=document.getElementById('editTextarea');
+  ta.value=p.content;
+  document.getElementById('editChar').textContent=p.content.length.toLocaleString('vi-VN')+' / 100,000';
+  document.getElementById('editModal').classList.add('open');
+  setTimeout(()=>ta.focus(),100);
+}
+function selectEditMood(el,mood){
+  editingMood=editingMood===mood?null:mood;
+  document.querySelectorAll('#editMoodRow .mood-btn').forEach(b=>{
+    const k=b.dataset.mood,m=MOOD_CONFIG[k];
+    if(k===editingMood){b.classList.add('active');b.style.cssText=`background:${m.bg};color:${m.color};border-color:${m.border}`;}
+    else{b.classList.remove('active');b.style.cssText='';}
+  });
+}
+function closeEditModal(){document.getElementById('editModal').classList.remove('open');editingPostId=null;}
+async function saveEdit(){
+  if(!editingPostId)return;
+  const content=document.getElementById('editTextarea').value.trim();
+  if(!content){showToast('Không thể để trống nội dung!');return;}
+  try{
+    await postsRef.child(editingPostId).update({content,mood:editingMood||null,editedAt:Date.now()});
+    showToast('Đã lưu thay đổi! ✅');
+    closeEditModal();
+  }catch(e){showToast('Lỗi khi lưu!');}
+}
+document.getElementById('editModal').addEventListener('click',function(e){if(e.target===this)closeEditModal();});
+
+// ── Firebase listener ────────────────────────────────────────
+postsRef.orderByChild('ts').limitToLast(MAX_POSTS).on('value',snap=>{
+  const val=snap.val();
+  posts=val?Object.values(val).sort((a,b)=>b.ts-a.ts):[];
+  renderPosts();updateStats();
 });
 
-// ── Submit ───────────────────────────────────────────────────
-async function submitPost() {
-  const btn = document.getElementById('postBtn');
-  const author = document.getElementById('authorInput').value.trim() || 'Ẩn danh';
-  const content = document.getElementById('contentArea').value.trim();
-  if (!content) { showToast('Hãy viết gì đó nhé!'); return; }
-  btn.disabled = true;
-  document.getElementById('savingIndicator').style.display = 'flex';
-  try {
-    const newRef = postsRef.push();
-    await newRef.set({
-      id: newRef.key,
-      author,
-      content,
-      mood: selectedMood,
-      ts: Date.now(),
-      likes: 0,
-      likedBy: {},
-    });
-    document.getElementById('contentArea').value = '';
-    document.getElementById('charCount').textContent = '0 / 100,000';
-    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-    selectedMood = null;
-    showToast('Đã đăng! Mọi người có thể xem bài của bạn.');
-  } catch(e) {
-    showToast('Lỗi kết nối, thử lại nhé!');
-    console.error(e);
-  } finally {
-    btn.disabled = false;
-    document.getElementById('savingIndicator').style.display = 'none';
+// ── Submit post ──────────────────────────────────────────────
+async function submitPost(){
+  const btn=document.getElementById('postBtn');
+  const content=document.getElementById('contentArea').value.trim();
+  if(!content){showToast('Hãy viết gì đó nhé!');return;}
+
+  // Xác định tên tác giả
+  let authorId, authorName, avatar, isGuest=false;
+  if(currentUser){
+    authorId=currentUser.uid;
+    authorName=currentUser.name;
+    avatar=currentUser.avatar||'';
+  } else {
+    authorName=getGuestName();
+    authorId='guest_'+makeUid(authorName);
+    avatar='';
+    isGuest=true;
   }
+
+  btn.disabled=true;
+  document.getElementById('savingIndicator').style.display='flex';
+  try{
+    const ref=postsRef.push();
+    await ref.set({
+      id:ref.key,
+      authorId,
+      authorName,
+      author:authorName,
+      avatar,
+      isGuest,
+      content,mood:selectedMood,ts:Date.now(),likes:0,likedBy:{},replies:{}
+    });
+    document.getElementById('contentArea').value='';
+    document.getElementById('charCount').textContent='0 / 100,000';
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
+    selectedMood=null;showToast('Đã đăng!');
+  }catch(e){showToast('Lỗi kết nối!');}
+  finally{btn.disabled=false;document.getElementById('savingIndicator').style.display='none';}
 }
 
 // ── Like ─────────────────────────────────────────────────────
-async function toggleLike(id) {
-  const myName = (document.getElementById('authorInput').value.trim() || 'anon').replace(/[.#$[\]]/g,'_');
-  const myKey = 'liker_' + myName;
-  const p = posts.find(x => x.id === id);
-  if (!p) return;
-  const likedBy = p.likedBy || {};
-  const postDbRef = postsRef.child(id);
-  if (likedBy[myKey]) {
-    await postDbRef.child('likedBy/' + myKey).remove();
-    await postDbRef.child('likes').transaction(v => Math.max(0,(v||0)-1));
-  } else {
-    await postDbRef.child('likedBy/' + myKey).set(true);
-    await postDbRef.child('likes').transaction(v => (v||0)+1);
+async function toggleLike(id){
+  if(!currentUser){showToast('Đăng nhập để yêu thích!');return;}
+  const mk='lk_'+currentUser.uid;
+  const p=posts.find(x=>x.id===id);if(!p)return;
+  const ref=postsRef.child(id);
+  if((p.likedBy||{})[mk]){
+    await ref.child('likedBy/'+mk).remove();
+    await ref.child('likes').transaction(v=>Math.max(0,(v||0)-1));
+  }else{
+    await ref.child('likedBy/'+mk).set(true);
+    await ref.child('likes').transaction(v=>(v||0)+1);
   }
 }
 
 // ── Delete ───────────────────────────────────────────────────
-async function deletePost(id) {
-  if (!confirm('Xoá bài viết này?')) return;
-  try {
-    await postsRef.child(id).remove();
-    showToast('Đã xoá bài viết.');
-  } catch(e) {
-    showToast('Lỗi xoá bài, thử lại nhé!');
+async function deletePost(id){
+  if(!currentUser)return;
+  const p=posts.find(x=>x.id===id);if(!p)return;
+  if(p.authorId!==currentUser.uid&&p.author!==currentUser.name){showToast('Chỉ xoá được bài của mình!');return;}
+  if(!confirm('Xoá bài viết này?'))return;
+  await postsRef.child(id).remove();showToast('Đã xoá.');
+}
+
+// ── Reply ────────────────────────────────────────────────────
+function toggleReplyBox(id){
+  if(openReplyIds.has(id))openReplyIds.delete(id);
+  else openReplyIds.add(id);
+  renderPosts();
+  if(openReplyIds.has(id)){
+    setTimeout(()=>{const inp=document.getElementById('ri_'+id);if(inp)inp.focus();},50);
   }
 }
 
-// ── Filter ───────────────────────────────────────────────────
-function setFilter(f, el) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  renderPosts();
+async function submitReply(postId){
+  const inp=document.getElementById('ri_'+postId);if(!inp)return;
+  const content=inp.value.trim();
+  if(!content){showToast('Viết gì đó để trả lời!');return;}
+  let authorId,authorName,avatar,isGuest=false;
+  if(currentUser){
+    authorId=currentUser.uid;authorName=currentUser.name;avatar=currentUser.avatar||'';
+  } else {
+    authorName=getGuestName();authorId='guest_'+makeUid(authorName);avatar='';isGuest=true;
+  }
+  const ref=postsRef.child(postId+'/replies').push();
+  await ref.set({id:ref.key,authorId,author:authorName,authorName,avatar,isGuest,content,ts:Date.now()});
+  inp.value='';inp.style.height='auto';
+  showToast('Đã trả lời!');
 }
-function toggleExpand(id) {
-  if (expandedIds.has(id)) expandedIds.delete(id);
-  else expandedIds.add(id);
+
+function scrollToPost(postId){
+  const card=document.querySelector(`[data-post-id="${postId}"]`);
+  if(!card)return;
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  card.classList.add('highlight');
+  setTimeout(()=>card.classList.remove('highlight'),1800);
+}
+
+// ── Filter & expand ──────────────────────────────────────────
+function setFilter(f,el){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');renderPosts();
+}
+function toggleExpand(id){
+  if(expandedIds.has(id))expandedIds.delete(id);else expandedIds.add(id);
   renderPosts();
 }
 
 // ── Render ───────────────────────────────────────────────────
-function renderPosts() {
-  const container = document.getElementById('postsContainer');
-  const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
-  const myName = (document.getElementById('authorInput')?.value.trim() || 'anon').replace(/[.#$[\]]/g,'_');
-  const myKey = 'liker_' + myName;
+function renderPosts(){
+  const container=document.getElementById('postsContainer');
+  const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
+  const mk=currentUser?'lk_'+currentUser.uid:'__none__';
 
-  let filtered = posts.filter(p => {
-    if (currentFilter !== 'all' && p.mood !== currentFilter) return false;
-    if (q && !p.content.toLowerCase().includes(q) && !p.author.toLowerCase().includes(q)) return false;
+  let filtered=posts.filter(p=>{
+    if(currentFilter!=='all'&&p.mood!==currentFilter)return false;
+    const name=(p.authorName||p.author||'').toLowerCase();
+    if(q&&!p.content.toLowerCase().includes(q)&&!name.includes(q))return false;
     return true;
   });
 
-  if (!filtered.length) {
-    container.innerHTML = posts.length === 0
-      ? '<div class="empty"><i class="ti ti-notebook"></i>Chưa có bài viết nào. Hãy là người đầu tiên!</div>'
-      : '<div class="empty"><i class="ti ti-search"></i>Không tìm thấy bài viết.</div>';
+  if(!filtered.length){
+    container.innerHTML=posts.length===0
+      ?'<div class="empty"><i class="ti ti-notebook"></i>Chưa có bài viết nào. Hãy là người đầu tiên!</div>'
+      :'<div class="empty"><i class="ti ti-search"></i>Không tìm thấy bài viết.</div>';
     return;
   }
 
-  container.innerHTML = '<div class="posts">' + filtered.map(p => {
-    const m = p.mood ? MOOD_CONFIG[p.mood] : null;
-    const av = getAvatarColor(p.author || '?');
-    const badge = m ? `<span class="mood-badge" style="background:${m.bg};color:${m.color};border:1px solid ${m.border}">${m.emoji} ${m.label}</span>` : '';
-    const isLong = p.content.length > 600;
-    const expanded = expandedIds.has(p.id);
-    const likedBy = p.likedBy || {};
-    const liked = !!likedBy[myKey];
-    const contentCls = isLong && !expanded ? 'post-content collapsed' : 'post-content';
-    const expandBtn = isLong ? `<button class="expand-btn" onclick="toggleExpand(${JSON.stringify(p.id)})">${expanded ? 'Thu gọn ▲' : 'Xem thêm ▼'}</button>` : '';
-    return `<div class="post-card">
+  container.innerHTML='<div class="posts">'+filtered.map(p=>{
+    const m=p.mood?MOOD_CONFIG[p.mood]:null;
+    const badge=m?`<span class="mood-badge" style="background:${m.bg};color:${m.color};border:1px solid ${m.border}">${m.emoji} ${m.label}</span>`:'';
+    const isLong=p.content.length>600;
+    const expanded=expandedIds.has(p.id);
+    const liked=!!((p.likedBy||{})[mk]);
+    // isOwner: ưu tiên authorId, fallback về author string cho bài cũ chưa migrate
+    const isOwner=currentUser&&(p.authorId===currentUser.uid||(p.authorId===undefined&&(p.author||p.authorName)===currentUser.name));
+    const displayName=p.authorName||p.author||'Ẩn danh';
+    const guestTag=p.isGuest?'<span style="font-size:10px;padding:1px 6px;border-radius:999px;background:#FDF3E0;color:#633806;border:1px solid #EF9F27;margin-left:4px;font-weight:500">Khách</span>':'';
+    const contentCls=isLong&&!expanded?'post-content collapsed':'post-content';
+    const expandBtn=isLong?`<button class="expand-btn" data-id="${esc(p.id)}" onclick="toggleExpand(this.dataset.id)">${expanded?'Thu gọn ▲':'Xem thêm ▼'}</button>`:'';
+
+    // Replies
+    const repliesArr=Object.values(p.replies||{}).sort((a,b)=>a.ts-b.ts);
+    const showBox=openReplyIds.has(p.id);
+    const replyCount=repliesArr.length;
+
+    const repliesHtml=repliesArr.map(r=>{
+      const pid=esc(p.id);
+      const rName=r.authorName||r.author||'Ẩn danh';
+      return `<div class="reply-card" onclick="scrollToPost('${pid}')" title="Bấm để xem bài gốc">
+        ${avHtml(rName,r.avatar,26)}
+        <div class="reply-bubble">
+          <div class="reply-header">
+            <span class="reply-author">${esc(rName)}</span>
+            <span class="reply-time">${timeAgo(r.ts)}</span>
+          </div>
+          <div class="reply-content">${esc(r.content)}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const replyBoxHtml=showBox?`<div class="reply-box">
+      <textarea class="reply-input" id="ri_${esc(p.id)}" placeholder="Trả lời ${esc(displayName)}..." rows="1"
+        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitReply('${esc(p.id)}');}"></textarea>
+      <button class="reply-send-btn" data-id="${esc(p.id)}" onclick="submitReply(this.dataset.id)">Gửi</button>
+    </div>`:'';
+
+    const replyBtnLabel=showBox?'Ẩn ▲':(replyCount>0?`💬 ${replyCount} trả lời`:'💬 Trả lời');
+    const hasRepliesSection=repliesHtml||replyBoxHtml;
+    const editedLabel=p.editedAt?'<span style="font-size:11px;color:#B0ADA6;margin-left:6px">(đã chỉnh sửa)</span>':'';
+
+    return `<div class="post-card" data-post-id="${esc(p.id)}">
       <div class="post-header">
-        <div class="avatar" style="background:${av.bg};color:${av.color}">${getInitials(p.author||'?')}</div>
+        ${avHtml(displayName,p.avatar,34)}
         <div class="post-meta">
-          <div class="post-author">${escHtml(p.author||'Ẩn danh')}</div>
-          <div class="post-time">${timeAgo(p.ts)}</div>
+          <div class="post-author">${esc(displayName)}${guestTag}</div>
+          <div class="post-time">${timeAgo(p.ts)}${editedLabel}</div>
         </div>
         ${badge}
       </div>
-      <div class="${contentCls}">${escHtml(p.content)}</div>
+      <div class="${contentCls}">${esc(p.content)}</div>
       ${expandBtn}
       <div class="post-actions">
-        <button class="like-btn ${liked?'liked':''}" onclick="toggleLike(${JSON.stringify(p.id)})">
-          <i class="ti ti-heart" style="font-size:15px"></i>
-          ${p.likes > 0 ? p.likes : 'Yêu thích'}
+        <button class="action-btn like ${liked?'liked':''}" data-id="${esc(p.id)}" onclick="toggleLike(this.dataset.id)">
+          <i class="ti ti-heart" style="font-size:15px"></i>${p.likes>0?p.likes:'Yêu thích'}
         </button>
-        <button class="del-btn" onclick="deletePost(${JSON.stringify(p.id)})" title="Xoá bài này">
-          <i class="ti ti-trash" style="font-size:15px"></i>Xoá
+        <button class="action-btn" data-id="${esc(p.id)}" onclick="toggleReplyBox(this.dataset.id)">
+          ${replyBtnLabel}
         </button>
+        ${isOwner?`<button class="action-btn del" data-id="${esc(p.id)}" onclick="deletePost(this.dataset.id)"><i class="ti ti-trash" style="font-size:14px"></i>Xoá</button>`:''}
+        ${isOwner?`<button class="action-btn edit" data-id="${esc(p.id)}" onclick="openEditModal(this.dataset.id)"><i class="ti ti-pencil" style="font-size:14px"></i>Sửa</button>`:''}
       </div>
+      ${hasRepliesSection?`<div class="replies-section">${repliesHtml}${replyBoxHtml}</div>`:''}
     </div>`;
-  }).join('') + '</div>';
+  }).join('')+'</div>';
 }
 
 // ── Stats ────────────────────────────────────────────────────
-function updateStats() {
-  const show = posts.length > 0;
-  document.getElementById('statsRow').style.display = show ? 'flex' : 'none';
-  document.getElementById('filterRow').style.display = show ? 'flex' : 'none';
-  if (!show) return;
-  document.getElementById('statTotal').textContent = posts.length;
-  const totalLikes = posts.reduce((s,p) => s + (p.likes||0), 0);
-  document.getElementById('statLikes').textContent = totalLikes;
-  const moodCount = {};
-  posts.forEach(p => { if (p.mood) moodCount[p.mood] = (moodCount[p.mood]||0)+1; });
-  const top = Object.entries(moodCount).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('statTop').textContent = top ? MOOD_CONFIG[top[0]].emoji : '—';
-  const users = new Set(posts.map(p=>p.author)).size;
-  document.getElementById('statUsers').textContent = users;
+function updateStats(){
+  const show=posts.length>0;
+  document.getElementById('statsRow').style.display=show?'flex':'none';
+  document.getElementById('filterRow').style.display=show?'flex':'none';
+  if(!show)return;
+  document.getElementById('statTotal').textContent=posts.length;
+  document.getElementById('statLikes').textContent=posts.reduce((s,p)=>s+(p.likes||0),0);
+  const mc={};posts.forEach(p=>{if(p.mood)mc[p.mood]=(mc[p.mood]||0)+1;});
+  const top=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('statTop').textContent=top?MOOD_CONFIG[top[0]].emoji:'—';
+  // Đếm unique users theo authorId (ưu tiên) hoặc author string
+  document.getElementById('statUsers').textContent=new Set(posts.map(p=>p.authorId||p.author)).size;
 }
 
 // ── Mood buttons ─────────────────────────────────────────────
-document.querySelectorAll('.mood-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-    if (selectedMood === btn.dataset.mood) { selectedMood = null; return; }
-    selectedMood = btn.dataset.mood;
-    btn.classList.add('active');
+document.querySelectorAll('.mood-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
+    if(selectedMood===btn.dataset.mood){selectedMood=null;return;}
+    selectedMood=btn.dataset.mood;btn.classList.add('active');
   });
 });
-
-document.getElementById('contentArea').addEventListener('input', function() {
-  const len = this.value.length;
-  const el = document.getElementById('charCount');
-  el.textContent = len.toLocaleString('vi-VN') + ' / 100,000';
-  el.className = 'char-count' + (len > 90000 ? ' near' : len > 70000 ? ' warn' : '');
+document.getElementById('contentArea').addEventListener('input',function(){
+  const len=this.value.length,el=document.getElementById('charCount');
+  el.textContent=len.toLocaleString('vi-VN')+' / 100,000';
+  el.className='char-count'+(len>90000?' near':len>70000?' warn':'');
 });
 </script>
 </body>
