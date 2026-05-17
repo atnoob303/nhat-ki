@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhật ký cảm xúc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#F7F5F0;color:#2C2A27;min-height:100vh}
+.app{max-width:680px;margin:0 auto;padding:2rem 1.25rem}
+.header{margin-bottom:1.75rem}
+.header h1{font-size:22px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.header p{font-size:14px;color:#7A7670}
+.shared-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;font-size:11px;font-weight:500}
+.write-box{background:#fff;border:1px solid #E8E5DF;border-radius:16px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.name-row{display:flex;gap:10px;margin-bottom:12px;align-items:center}
+.name-input{flex:1;font-size:14px;padding:8px 12px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;outline:none;font-family:inherit}
+.name-input:focus{border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.1)}
+.mood-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.mood-label{font-size:13px;color:#7A7670;margin-right:2px}
+.mood-btn{padding:6px 14px;border-radius:999px;border:1px solid #E8E5DF;background:#F7F5F0;color:#7A7670;font-size:13px;cursor:pointer;transition:all .15s;font-family:inherit}
+.mood-btn:hover{border-color:#B0A9E8}
+.mood-btn[data-mood="vui"].active{background:#EEEDFE;color:#3C3489;border-color:#AFA9EC}
+.mood-btn[data-mood="buồn"].active{background:#E3F0FB;color:#0C447C;border-color:#85B7EB}
+.mood-btn[data-mood="tức"].active{background:#FAECE7;color:#712B13;border-color:#F0997B}
+.mood-btn[data-mood="lo"].active{background:#FDF3E0;color:#633806;border-color:#EF9F27}
+.mood-btn[data-mood="bình"].active{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.mood-btn[data-mood="mệt"].active{background:#F1EFE8;color:#444441;border-color:#B4B2A9}
+.mood-btn[data-mood="yêu"].active{background:#FBEAF0;color:#72243E;border-color:#ED93B1}
+.mood-btn[data-mood="khác"].active{background:#F1EFE8;color:#444441;border-color:#D3D1C7}
+.content-area{width:100%;min-height:110px;resize:vertical;font-size:15px;line-height:1.7;padding:10px 12px;border:1px solid #E8E5DF;border-radius:10px;background:#F7F5F0;color:#2C2A27;font-family:inherit;outline:none;transition:border .15s}
+.content-area:focus{border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.1)}
+.bottom-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.char-count{font-size:12px;color:#B0ADA6}
+.char-count.warn{color:#BA7517}
+.char-count.near{color:#E24B4A}
+.post-btn{padding:8px 22px;background:#534AB7;color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit;display:flex;align-items:center;gap:6px}
+.post-btn:hover{background:#3C3489}
+.post-btn:active{transform:scale(0.97)}
+.post-btn:disabled{opacity:.5;cursor:not-allowed}
+.saving-indicator{font-size:12px;color:#B0ADA6;display:flex;align-items:center;gap:4px}
+.stats-row{display:flex;gap:8px;margin-bottom:1rem}
+.stat-card{flex:1;background:#fff;border:1px solid #E8E5DF;border-radius:12px;padding:10px 14px}
+.stat-num{font-size:20px;font-weight:600;color:#2C2A27}
+.stat-lbl{font-size:12px;color:#7A7670;margin-top:2px}
+.filter-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:13px;color:#7A7670}
+.filter-btn{padding:4px 12px;border-radius:999px;border:1px solid #E8E5DF;background:transparent;color:#7A7670;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s}
+.filter-btn:hover{border-color:#B0A9E8;color:#534AB7}
+.filter-btn.active{background:#534AB7;color:#fff;border-color:#534AB7}
+.search-input{margin-left:auto;font-size:13px;padding:5px 10px;border:1px solid #E8E5DF;border-radius:999px;background:#fff;color:#2C2A27;outline:none;width:160px;font-family:inherit}
+.search-input:focus{border-color:#534AB7}
+.posts{display:flex;flex-direction:column;gap:10px}
+.post-card{background:#fff;border:1px solid #E8E5DF;border-radius:14px;padding:1rem 1.25rem;box-shadow:0 1px 3px rgba(0,0,0,0.04);animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.post-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.post-meta{flex:1}
+.post-author{font-size:14px;font-weight:500}
+.post-time{font-size:12px;color:#B0ADA6}
+.mood-badge{padding:3px 10px;border-radius:999px;font-size:11px;font-weight:500;white-space:nowrap}
+.post-content{font-size:15px;line-height:1.7;color:#2C2A27;word-break:break-word;white-space:pre-wrap}
+.post-content.collapsed{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.expand-btn{margin-top:4px;background:none;border:none;color:#534AB7;font-size:13px;cursor:pointer;padding:0;font-family:inherit}
+.post-actions{display:flex;gap:12px;margin-top:10px;padding-top:8px;border-top:1px solid #F0EDE8}
+.like-btn,.del-btn{background:none;border:none;font-size:13px;color:#B0ADA6;cursor:pointer;display:flex;align-items:center;gap:4px;padding:0;font-family:inherit;transition:color .15s}
+.like-btn:hover{color:#D4537E}
+.del-btn:hover{color:#E24B4A}
+.like-btn.liked{color:#D4537E}
+.empty{text-align:center;padding:3rem 1rem;color:#B0ADA6;font-size:14px}
+.empty i{font-size:32px;display:block;margin-bottom:8px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#2C2A27;color:#F7F5F0;padding:9px 20px;border-radius:999px;font-size:13px;opacity:0;transition:all .25s;z-index:99;pointer-events:none;font-family:inherit}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.loading-bar{text-align:center;padding:3rem 1rem;color:#B0ADA6;font-size:14px}
+.conn-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:2px 8px;border-radius:999px;margin-left:8px;font-weight:500}
+.conn-status.online{background:#E8F5E9;color:#2E7D32}
+.conn-status.offline{background:#FEECE9;color:#B71C1C}
+.conn-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>
+      <i class="ti ti-mood-smile" style="font-size:20px;color:#534AB7"></i>
+      Nhật ký cảm xúc
+      <span class="shared-badge"><i class="ti ti-world" style="font-size:12px"></i>Cộng đồng</span>
+      <span class="conn-status offline" id="connStatus"><span class="conn-dot"></span><span id="connText">Đang kết nối...</span></span>
+    </h1>
+    <p>Mọi người đều thấy bài của nhau — chia sẻ thật lòng nhé</p>
+  </div>
+
+  <div class="write-box">
+    <div class="name-row">
+      <i class="ti ti-user" style="color:#B0ADA6;font-size:18px"></i>
+      <input class="name-input" id="authorInput" placeholder="Tên của bạn (hoặc để trống là Ẩn danh)..." maxlength="40" />
+    </div>
+    <div class="mood-row" id="moodRow">
+      <span class="mood-label">Tâm trạng:</span>
+      <button class="mood-btn" data-mood="vui">😊 Vui</button>
+      <button class="mood-btn" data-mood="buồn">😔 Buồn</button>
+      <button class="mood-btn" data-mood="tức">😤 Tức</button>
+      <button class="mood-btn" data-mood="lo">😰 Lo lắng</button>
+      <button class="mood-btn" data-mood="bình">😌 Bình yên</button>
+      <button class="mood-btn" data-mood="mệt">😴 Mệt mỏi</button>
+      <button class="mood-btn" data-mood="yêu">🥰 Yêu thương</button>
+      <button class="mood-btn" data-mood="khác">✨ Khác</button>
+    </div>
+    <textarea class="content-area" id="contentArea" placeholder="Hôm nay bạn cảm thấy thế nào?..." maxlength="100000"></textarea>
+    <div class="bottom-row">
+      <span class="char-count" id="charCount">0 / 100,000</span>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="saving-indicator" id="savingIndicator" style="display:none">
+          <i class="ti ti-loader" style="font-size:13px"></i>Đang lưu...
+        </span>
+        <button class="post-btn" id="postBtn" onclick="submitPost()">
+          <i class="ti ti-send" style="font-size:15px"></i>Đăng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row" id="statsRow" style="display:none">
+    <div class="stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">bài viết</div></div>
+    <div class="stat-card"><div class="stat-num" id="statTop">—</div><div class="stat-lbl">tâm trạng chủ đạo</div></div>
+    <div class="stat-card"><div class="stat-num" id="statLikes">0</div><div class="stat-lbl">lượt yêu thích</div></div>
+    <div class="stat-card"><div class="stat-num" id="statUsers">0</div><div class="stat-lbl">người viết</div></div>
+  </div>
+
+  <div class="filter-row" id="filterRow" style="display:none">
+    <span class="filter-label">Lọc:</span>
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Tất cả</button>
+    <button class="filter-btn" data-filter="vui" onclick="setFilter('vui',this)">😊</button>
+    <button class="filter-btn" data-filter="buồn" onclick="setFilter('buồn',this)">😔</button>
+    <button class="filter-btn" data-filter="tức" onclick="setFilter('tức',this)">😤</button>
+    <button class="filter-btn" data-filter="lo" onclick="setFilter('lo',this)">😰</button>
+    <button class="filter-btn" data-filter="bình" onclick="setFilter('bình',this)">😌</button>
+    <button class="filter-btn" data-filter="mệt" onclick="setFilter('mệt',this)">😴</button>
+    <button class="filter-btn" data-filter="yêu" onclick="setFilter('yêu',this)">🥰</button>
+    <input class="search-input" id="searchInput" placeholder="Tìm kiếm..." oninput="renderPosts()" />
+  </div>
+
+  <div id="postsContainer">
+    <div class="loading-bar"><i class="ti ti-loader" style="font-size:22px;display:block;margin-bottom:8px"></i>Đang kết nối Firebase...</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK (compat version — dùng script tag, không cần bundler) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+// ── Firebase config ──────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyD5oPUMmO55RuyfC1RwJ_AQo3D6W5bGVfU",
+  authDomain: "cryo-3c9da.firebaseapp.com",
+  databaseURL: "https://cryo-3c9da-default-rtdb.firebaseio.com",
+  projectId: "cryo-3c9da",
+  storageBucket: "cryo-3c9da.firebasestorage.app",
+  messagingSenderId: "1098539323888",
+  appId: "1:1098539323888:web:5d008f284b1b8bde160d35",
+  measurementId: "G-4VXZ5EFL38"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const postsRef = db.ref('mood_posts');
+
+// ── State ────────────────────────────────────────────────────
+let posts = [];
+let selectedMood = null;
+let currentFilter = 'all';
+let expandedIds = new Set();
+const MAX_POSTS = 200;
+
+// ── Mood config ──────────────────────────────────────────────
+const MOOD_CONFIG = {
+  vui:  {emoji:'😊',label:'Vui',       bg:'#EEEDFE',color:'#3C3489',border:'#AFA9EC'},
+  buồn: {emoji:'😔',label:'Buồn',      bg:'#E3F0FB',color:'#0C447C',border:'#85B7EB'},
+  tức:  {emoji:'😤',label:'Tức',       bg:'#FAECE7',color:'#712B13',border:'#F0997B'},
+  lo:   {emoji:'😰',label:'Lo lắng',   bg:'#FDF3E0',color:'#633806',border:'#EF9F27'},
+  bình: {emoji:'😌',label:'Bình yên',  bg:'#EAF3DE',color:'#27500A',border:'#97C459'},
+  mệt:  {emoji:'😴',label:'Mệt mỏi',  bg:'#F1EFE8',color:'#444441',border:'#B4B2A9'},
+  yêu:  {emoji:'🥰',label:'Yêu thương',bg:'#FBEAF0',color:'#72243E',border:'#ED93B1'},
+  khác: {emoji:'✨',label:'Khác',      bg:'#F1EFE8',color:'#444441',border:'#D3D1C7'},
+};
+
+const AVATAR_COLORS = [
+  {bg:'#EEEDFE',color:'#3C3489'},{bg:'#E3F0FB',color:'#0C447C'},
+  {bg:'#FAECE7',color:'#712B13'},{bg:'#EAF3DE',color:'#27500A'},
+  {bg:'#FDF3E0',color:'#633806'},{bg:'#FBEAF0',color:'#72243E'},
+  {bg:'#EAF3DE',color:'#3B6D11'},{bg:'#F1EFE8',color:'#5F5E5A'},
+];
+
+function getAvatarColor(name) {
+  let h = 0;
+  for (let c of name) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+function getInitials(name) {
+  const w = name.trim().split(/\s+/);
+  if (w.length >= 2) return (w[0][0] + w[w.length-1][0]).toUpperCase();
+  return name.slice(0,2).toUpperCase();
+}
+function timeAgo(ts) {
+  const d = (Date.now() - ts) / 1000;
+  if (d < 60) return 'vừa xong';
+  if (d < 3600) return Math.floor(d/60) + ' phút trước';
+  if (d < 86400) return Math.floor(d/3600) + ' giờ trước';
+  return Math.floor(d/86400) + ' ngày trước';
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Connection status ────────────────────────────────────────
+db.ref('.info/connected').on('value', snap => {
+  const online = snap.val();
+  const el = document.getElementById('connStatus');
+  const txt = document.getElementById('connText');
+  el.className = 'conn-status ' + (online ? 'online' : 'offline');
+  txt.textContent = online ? 'Trực tuyến' : 'Mất kết nối';
+});
+
+// ── Listen realtime ──────────────────────────────────────────
+postsRef.orderByChild('ts').limitToLast(MAX_POSTS).on('value', snap => {
+  const val = snap.val();
+  if (val) {
+    posts = Object.values(val).sort((a,b) => b.ts - a.ts);
+  } else {
+    posts = [];
+  }
+  renderPosts();
+  updateStats();
+});
+
+// ── Submit ───────────────────────────────────────────────────
+async function submitPost() {
+  const btn = document.getElementById('postBtn');
+  const author = document.getElementById('authorInput').value.trim() || 'Ẩn danh';
+  const content = document.getElementById('contentArea').value.trim();
+  if (!content) { showToast('Hãy viết gì đó nhé!'); return; }
+  btn.disabled = true;
+  document.getElementById('savingIndicator').style.display = 'flex';
+  try {
+    const newRef = postsRef.push();
+    await newRef.set({
+      id: newRef.key,
+      author,
+      content,
+      mood: selectedMood,
+      ts: Date.now(),
+      likes: 0,
+      likedBy: {},
+    });
+    document.getElementById('contentArea').value = '';
+    document.getElementById('charCount').textContent = '0 / 100,000';
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+    selectedMood = null;
+    showToast('Đã đăng! Mọi người có thể xem bài của bạn.');
+  } catch(e) {
+    showToast('Lỗi kết nối, thử lại nhé!');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('savingIndicator').style.display = 'none';
+  }
+}
+
+// ── Like ─────────────────────────────────────────────────────
+async function toggleLike(id) {
+  const myName = (document.getElementById('authorInput').value.trim() || 'anon').replace(/[.#$[\]]/g,'_');
+  const myKey = 'liker_' + myName;
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  const likedBy = p.likedBy || {};
+  const postDbRef = postsRef.child(id);
+  if (likedBy[myKey]) {
+    await postDbRef.child('likedBy/' + myKey).remove();
+    await postDbRef.child('likes').transaction(v => Math.max(0,(v||0)-1));
+  } else {
+    await postDbRef.child('likedBy/' + myKey).set(true);
+    await postDbRef.child('likes').transaction(v => (v||0)+1);
+  }
+}
+
+// ── Delete ───────────────────────────────────────────────────
+async function deletePost(id) {
+  if (!confirm('Xoá bài viết này?')) return;
+  try {
+    await postsRef.child(id).remove();
+    showToast('Đã xoá bài viết.');
+  } catch(e) {
+    showToast('Lỗi xoá bài, thử lại nhé!');
+  }
+}
+
+// ── Filter ───────────────────────────────────────────────────
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderPosts();
+}
+function toggleExpand(id) {
+  if (expandedIds.has(id)) expandedIds.delete(id);
+  else expandedIds.add(id);
+  renderPosts();
+}
+
+// ── Render ───────────────────────────────────────────────────
+function renderPosts() {
+  const container = document.getElementById('postsContainer');
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  const myName = (document.getElementById('authorInput')?.value.trim() || 'anon').replace(/[.#$[\]]/g,'_');
+  const myKey = 'liker_' + myName;
+
+  let filtered = posts.filter(p => {
+    if (currentFilter !== 'all' && p.mood !== currentFilter) return false;
+    if (q && !p.content.toLowerCase().includes(q) && !p.author.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  if (!filtered.length) {
+    container.innerHTML = posts.length === 0
+      ? '<div class="empty"><i class="ti ti-notebook"></i>Chưa có bài viết nào. Hãy là người đầu tiên!</div>'
+      : '<div class="empty"><i class="ti ti-search"></i>Không tìm thấy bài viết.</div>';
+    return;
+  }
+
+  container.innerHTML = '<div class="posts">' + filtered.map(p => {
+    const m = p.mood ? MOOD_CONFIG[p.mood] : null;
+    const av = getAvatarColor(p.author || '?');
+    const badge = m ? `<span class="mood-badge" style="background:${m.bg};color:${m.color};border:1px solid ${m.border}">${m.emoji} ${m.label}</span>` : '';
+    const isLong = p.content.length > 600;
+    const expanded = expandedIds.has(p.id);
+    const likedBy = p.likedBy || {};
+    const liked = !!likedBy[myKey];
+    const contentCls = isLong && !expanded ? 'post-content collapsed' : 'post-content';
+    const expandBtn = isLong ? `<button class="expand-btn" onclick="toggleExpand(${JSON.stringify(p.id)})">${expanded ? 'Thu gọn ▲' : 'Xem thêm ▼'}</button>` : '';
+    return `<div class="post-card">
+      <div class="post-header">
+        <div class="avatar" style="background:${av.bg};color:${av.color}">${getInitials(p.author||'?')}</div>
+        <div class="post-meta">
+          <div class="post-author">${escHtml(p.author||'Ẩn danh')}</div>
+          <div class="post-time">${timeAgo(p.ts)}</div>
+        </div>
+        ${badge}
+      </div>
+      <div class="${contentCls}">${escHtml(p.content)}</div>
+      ${expandBtn}
+      <div class="post-actions">
+        <button class="like-btn ${liked?'liked':''}" onclick="toggleLike(${JSON.stringify(p.id)})">
+          <i class="ti ti-heart" style="font-size:15px"></i>
+          ${p.likes > 0 ? p.likes : 'Yêu thích'}
+        </button>
+        <button class="del-btn" onclick="deletePost(${JSON.stringify(p.id)})" title="Xoá bài này">
+          <i class="ti ti-trash" style="font-size:15px"></i>Xoá
+        </button>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+// ── Stats ────────────────────────────────────────────────────
+function updateStats() {
+  const show = posts.length > 0;
+  document.getElementById('statsRow').style.display = show ? 'flex' : 'none';
+  document.getElementById('filterRow').style.display = show ? 'flex' : 'none';
+  if (!show) return;
+  document.getElementById('statTotal').textContent = posts.length;
+  const totalLikes = posts.reduce((s,p) => s + (p.likes||0), 0);
+  document.getElementById('statLikes').textContent = totalLikes;
+  const moodCount = {};
+  posts.forEach(p => { if (p.mood) moodCount[p.mood] = (moodCount[p.mood]||0)+1; });
+  const top = Object.entries(moodCount).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('statTop').textContent = top ? MOOD_CONFIG[top[0]].emoji : '—';
+  const users = new Set(posts.map(p=>p.author)).size;
+  document.getElementById('statUsers').textContent = users;
+}
+
+// ── Mood buttons ─────────────────────────────────────────────
+document.querySelectorAll('.mood-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+    if (selectedMood === btn.dataset.mood) { selectedMood = null; return; }
+    selectedMood = btn.dataset.mood;
+    btn.classList.add('active');
+  });
+});
+
+document.getElementById('contentArea').addEventListener('input', function() {
+  const len = this.value.length;
+  const el = document.getElementById('charCount');
+  el.textContent = len.toLocaleString('vi-VN') + ' / 100,000';
+  el.className = 'char-count' + (len > 90000 ? ' near' : len > 70000 ? ' warn' : '');
+});
+</script>
+</body>
+</html>
